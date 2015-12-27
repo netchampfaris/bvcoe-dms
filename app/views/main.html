@@ -1,11 +1,87 @@
-<div class="jumbotron">
-  <form class="form-signin">
-    <h2 class="form-signin-heading">Teachers Login</h2>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="user.email" required autofocus>
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="user.pass" required>
-    <button class="btn btn-lg btn-primary btn-block" ng-click="login(user)">Sign in</button>
 
-  </form>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Teacher's Login</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form-signin">
+          <div class="input-group">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+            <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="user.email"
+                   required autofocus>
+          </div>
+          <div class="input-group">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="user.pass"
+                   required>
+          </div>
+          <button class="btn btn-primary btn-block" ng-click="login(user)">Sign in</button>
+          <div cg-busy="{promise:promise, message:'Signing in..', backdrop:true}"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Teacher's Registration</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form-signin" name="regform" ng-submit="register(reg)">
+          <!--<div class="input-group" ng-class="{ 'has-error' : regform.name.$invalid && !regform.name.$pristine }">
+            <label for="inputName" class="sr-only">Full Name</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+            <input type="text" id="inputName" name="name" class="form-control" placeholder="Full name" ng-model="reg.name" required>
+          </div>
+          <p ng-show="regform.name.$invalid && !regform.name.$pristine" class="help-block">Your name is required.</p>
+
+          <div class="input-group">
+            <label for="inputDept" class="sr-only">Department</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-briefcase"></span></span>
+            <select id="inputDept" class="form-control">
+              <option ng-repeat="dept in depts" value="{{dept.id}}">{{dept.name}}</option>
+            </select>
+          </div>-->
+          <div class="input-group" ng-class="{ 'has-error' : regform.email.$invalid && !regform.email.$pristine }">
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+            <input type="email" id="inputEmail" name="email" class="form-control" placeholder="Email address" ng-model="reg.email"
+                   required>
+          </div>
+          <p ng-show="regform.email.$invalid && !regform.email.$pristine" class="help-block">Email is invalid.</p>
+
+          <div class="input-group" ng-class="{ 'has-error' : regform.pass.$invalid && !regform.pass.$pristine }">
+            <label for="inputPassword" class="sr-only">Password</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input type="password" id="inputPassword" name="pass" class="form-control" placeholder="Password" minlength="6" ng-model="reg.pass"
+                   required>
+          </div>
+          <p ng-show="regform.pass.$invalid && !regform.pass.$pristine" class="help-block">Passwords min length should be 6</p>
+
+          <div class="input-group" ng-class="{ 'has-error' : regform.pass2.$invalid && !regform.pass2.$pristine }">
+            <label for="inputPassword2" class="sr-only">Confirm Password</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+            <input type="password" id="inputPassword2" name="pass2" class="form-control" placeholder="Confirm password" minlength="6"  ng-model="reg.pass2"
+                   required compare-to="reg.pass">
+          </div>
+          <p ng-show="regform.pass2.$invalid && !regform.pass2.$pristine" class="help-block">Passwords must match</p>
+
+          <div class="input-group">
+            <label for="inputToken" class="sr-only">Token</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-pencil"></span></span>
+            <input type="text" id="inputToken" class="form-control" placeholder="Token" ng-model="reg.token" required>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block" ng-disabled="regform.$invalid">Register</button>
+          <div cg-busy="regpromise"></div>
+          <div class="alert" ng-class="{'alert-success':message.regSuccess, 'alert-danger':!message.regSuccess}" ng-show="message.text !== ''" style="margin-top: 1em" role="alert">{{message.text}}</div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
+
+

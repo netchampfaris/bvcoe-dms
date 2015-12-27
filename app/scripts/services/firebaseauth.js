@@ -8,7 +8,7 @@
  * Service in the bvcoeDmsApp.
  */
 angular.module('bvcoeDmsApp')
-  .factory('FirebaseAuth', function ($firebaseAuth) {
-      var ref = new Firebase("https://hazri.firebaseio.com/");
+  .factory('FirebaseAuth', function ($firebaseAuth, firebaseurl) {
+      var ref = new Firebase(firebaseurl);
       return $firebaseAuth(ref);
-    });
+  });

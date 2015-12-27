@@ -16,8 +16,30 @@ angular
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'firebase'
+    'firebase',
+    'cgBusy'
   ])
+  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location) {
+
+    $rootScope.authData = FirebaseRef.getAuth();
+
+    FirebaseRef.onAuth(function(authData) {
+      if (authData) {
+        console.log("Logged in as:", authData.uid);
+        $rootScope.access = true;
+        $location.path('/dashboard');
+      } else {
+        console.log("Logged out");
+        $rootScope.access = false;
+      }
+      $rootScope.authData = FirebaseRef.getAuth();
+    });
+
+    $rootScope.logout = function () {
+      FirebaseRef.unauth();
+    }
+
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -47,6 +69,11 @@ angular
             return FirebaseAuth.$requireAuth();
           }]
         }
+      })
+      .when('/defaulters', {
+        templateUrl: 'views/defaulters.html',
+        controller: 'DefaultersCtrl',
+        controllerAs: 'defaulters'
       })
       .otherwise({
         redirectTo: '/'
