@@ -16,16 +16,40 @@ angular.module('bvcoeDmsApp')
 
     FirebaseRef.onAuth(function(authData) {
       if (authData) {
-        /*if(isNewUser(authData))
-        {
-          //store user info in firebase
-        }*/
+        isNewUser(authData).then(function(isNew) {
+          if(isNew)
+            FirebaseRef.child('teachers/'+$scope.reg.dept+'/'+authData.uid).set({
+              name: $scope.reg.name
+            });
+        }, function() {});
+
         console.log("Logged in as:", authData.uid);
         $location.path('/dashboard');
       } else {
         console.log("Logged out");
       }
     });
+
+    var isNewUser = function(authData) {
+      var defer = $q.defer();
+      var isNew = true;
+      FirebaseRef.child('teachers').once('value', function(snapshot) {
+        for(var dept in snapshot.val())
+        {
+          for(var uid in snapshot.val()[dept]) {
+            console.log(uid);
+            if(authData.uid == uid){
+              isNew = false;
+            }
+          }
+        }
+        defer.resolve(isNew);
+      }, function(err) {
+        console.log(err);
+        defer.reject();
+      });
+      return defer.promise;
+    };
 
     $scope.login = function (user) {
       var defer = $q.defer();
@@ -115,8 +139,9 @@ angular.module('bvcoeDmsApp')
             console.log("Successfully created user account with uid:", userData.uid);
             $scope.message.regSuccess = true;
             $scope.message.text = "Registration completed successfully!";
-            $scope.regform.$setPristine();
-            $scope.reg = {};
+            /*$scope.regform.$setPristine();
+            $scope.reg = {};*/
+            $scope.login(user);
             defer.resolve();
           }
         });

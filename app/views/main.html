@@ -32,7 +32,7 @@
       </div>
       <div class="panel-body">
         <form class="form-signin" name="regform" ng-submit="register(reg)">
-          <!--<div class="input-group" ng-class="{ 'has-error' : regform.name.$invalid && !regform.name.$pristine }">
+          <div class="input-group" ng-class="{ 'has-error' : regform.name.$invalid && !regform.name.$pristine }">
             <label for="inputName" class="sr-only">Full Name</label>
             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
             <input type="text" id="inputName" name="name" class="form-control" placeholder="Full name" ng-model="reg.name" required>
@@ -42,10 +42,10 @@
           <div class="input-group">
             <label for="inputDept" class="sr-only">Department</label>
             <span class="input-group-addon"><span class="glyphicon glyphicon-briefcase"></span></span>
-            <select id="inputDept" class="form-control">
+            <select id="inputDept" class="form-control" ng-model="reg.dept">
               <option ng-repeat="dept in depts" value="{{dept.id}}">{{dept.name}}</option>
             </select>
-          </div>-->
+          </div>
           <div class="input-group" ng-class="{ 'has-error' : regform.email.$invalid && !regform.email.$pristine }">
             <label for="inputEmail" class="sr-only">Email address</label>
             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
