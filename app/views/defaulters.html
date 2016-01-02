@@ -40,7 +40,7 @@
     </div>
   </div>
   <div class="col-md-6">
-    <div class="panel panel-default" ng-show="defaulters.length">
+    <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Defaulters</h3>
       </div>
@@ -49,7 +49,7 @@
           <div href="#" class="list-group-item" ng-repeat="item in defaulters">
             <h4 class="list-group-item-heading">{{item.dept}} {{item.year}} Semester {{item.sem}}</h4>
             <p class="list-group-item-text">Date: {{item.date | date:'dd MMMM, yyyy'}}</p>
-            <a href="{{item.link}}">Download this defaulter</a>
+            <a href="#/defaulters" ng-click="download(item.base64)">Download this defaulter</a>
           </div>
         </div>
       </div>
