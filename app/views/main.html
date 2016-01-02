@@ -21,6 +21,7 @@
           </div>
           <button class="btn btn-primary btn-block" ng-click="login(user)">Sign in</button>
           <div cg-busy="{promise:promise, message:'Signing in..', backdrop:true}"></div>
+          <div class="alert" ng-class="{'alert-success':login.success, 'alert-danger':!login.success}" ng-show="login.message.length" style="margin-top: 1em" role="alert">{{login.message}}</div>
         </form>
       </div>
     </div>

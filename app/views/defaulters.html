@@ -1,1 +1,58 @@
-<p>This is the defaulters view.</p>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">View Defaulters</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form-signin">
+          <div class="input-group">
+            <label for="inputDept" class="sr-only">Department</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-briefcase"></span></span>
+            <select id="inputDept" class="form-control" ng-model="form.dept">
+              <option ng-repeat="dept in depts" value="{{dept.id}}">{{dept.name}}</option>
+            </select>
+            <div cg-busy="deptpromise"></div>
+          </div>
+
+          <div class="input-group">
+            <label for="inputYear" class="sr-only">Year</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-signal"></span></span>
+            <select id="inputYear" class="form-control" ng-model="form.year">
+              <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="inputSem" class="sr-only">Year</label>
+            <span class="input-group-addon"><span class="glyphicon glyphicon-signal"></span></span>
+            <select id="inputSem" class="form-control" ng-model="form.sem">
+              <option value="{{2 * form.year - 1}}">Semester {{2 * form.year - 1}}</option>
+              <option value="{{2 * form.year}}">Semester {{2 * form.year}}</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary btn-block" ng-click="loadDefaulters(form)">Go</button>
+          <div cg-busy="{promise:promise, message:'Loading in..', backdrop:true}"></div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="panel panel-default" ng-show="defaulters.length">
+      <div class="panel-heading">
+        <h3 class="panel-title">Defaulters</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <div href="#" class="list-group-item" ng-repeat="item in defaulters">
+            <h4 class="list-group-item-heading">{{item.dept}} {{item.year}} Semester {{item.sem}}</h4>
+            <p class="list-group-item-text">Date: {{item.date | date:'dd MMMM, yyyy'}}</p>
+            <a href="{{item.link}}">Download this defaulter</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
