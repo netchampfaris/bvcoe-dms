@@ -1,1 +1,25 @@
 <p>This is the dashboard view.</p>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Push Notifications</h3>
+  </div>
+  <div class="panel-body">
+    <form class="form-signin">
+      <div class="input-group">
+        <label for="title" class="sr-only">Title</label>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+        <input type="text" id="title" class="form-control" placeholder="Title" ng-model="notif.title"
+               required autofocus>
+      </div>
+      <div class="input-group">
+        <label for="body" class="sr-only">Password</label>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type="textarea" id="body" class="form-control" placeholder="Notification body" ng-model="notif.body"
+               required>
+      </div>
+      <button class="btn btn-primary btn-block" ng-click="push(notif)">Push</button>
+    </form>
+  </div>
+</div>
+

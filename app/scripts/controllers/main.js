@@ -70,7 +70,7 @@ angular.module('bvcoeDmsApp')
           defer.resolve();
         }
       }, {
-        remember: 'default' /*later change it to sessionOnly*/
+        remember: 'sessionOnly' /*later change it to sessionOnly*/
       });
       $scope.promise = defer.promise;
     };
