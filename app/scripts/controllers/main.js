@@ -19,7 +19,8 @@ angular.module('bvcoeDmsApp')
         isNewUser(authData).then(function(isNew) {
           console.log('new user: '+isNew);
           if(isNew) {
-            FirebaseRef.child('teachers/'+$scope.reg.dept+'/'+authData.uid).set({
+            FirebaseRef.child('teachers/'+authData.uid).set({
+              dept: $scope.reg.dept,
               name: $scope.reg.name
               //add other details if you want
             }, function() {

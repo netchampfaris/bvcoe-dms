@@ -17,6 +17,7 @@
     <!-- endbuild -->
   </head>
   <body ng-app="bvcoeDmsApp">
+  <div class="se-pre-con"></div>
     <!--[if lte IE 8]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -50,7 +51,7 @@
                     {{authData.password.email}} <span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a ng-href="#/dataentry">Data Entry</a></li>
-                    <li><a ng-href="">Another action</a></li>
+                    <li><a ng-href="#/attendances">My Attendances</a></li>
                     <li><a ng-href="">Something else here</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a ng-href="" ng-click="logout()">Logout</a></li>
@@ -118,6 +119,16 @@
         <script src="scripts/controllers/dataentry.js"></script>
         <script src="scripts/utils/xlsx-reader.js"></script>
         <script src="scripts/services/xslxreaderservice.js"></script>
+        <script src="scripts/controllers/attendances.js"></script>
         <!-- endbuild -->
+
+<script>
+  //paste this code under head tag or in a seperate js file.
+  // Wait for window load
+  $(window).load(function() {
+    // Animate loader off screen
+    $(".se-pre-con").fadeOut("slow");;
+  });
+</script>
 </body>
 </html>

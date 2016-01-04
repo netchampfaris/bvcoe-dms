@@ -89,6 +89,11 @@ angular
           }]
         }
       })
+      .when('/attendances', {
+        templateUrl: 'views/attendances.html',
+        controller: 'AttendancesCtrl',
+        controllerAs: 'attendances'
+      })
       .otherwise({
         redirectTo: '/'
       });
