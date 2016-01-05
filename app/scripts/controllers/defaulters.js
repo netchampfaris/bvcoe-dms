@@ -8,7 +8,7 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q, $http) {
+  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q) {
 
 
     $scope.depts = [];
@@ -58,14 +58,14 @@ angular.module('bvcoeDmsApp')
         case "3": year = "te"; break;
         case "4": year = "be"; break;
       }
-
+      var deferred = $q.defer();
       FirebaseRef.child('defaulters/'+dept).once('value',function (snapshot) {
         var defaulters = [];
         console.log(snapshot.val());
         for(var key in snapshot.val())
         {
           var res = key.split("-");
-          console.log(res);
+          //console.log(res);
           defaulters.push({
             dept: res[1].toUpperCase(),
             year: res[2].toUpperCase(),
@@ -75,11 +75,14 @@ angular.module('bvcoeDmsApp')
           });
         }
         $scope.defaulters = defaulters;
-        console.log($scope.defaulters);
+        deferred.resolve();
+        //console.log($scope.defaulters);
         $scope.$apply();
       }, function (err) {
         console.log(err);
+        deferred.reject();
       });
+      $scope.promise = deferred.promise;
     };
 
     $scope.download = function(base64) {

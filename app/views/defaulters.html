@@ -39,19 +39,24 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6" ng-show="defaulters.length>0">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Defaulters</h3>
       </div>
       <div class="panel-body">
-        <div class="list-group">
-          <div href="#" class="list-group-item" ng-repeat="item in defaulters">
-            <h4 class="list-group-item-heading">{{item.dept}} {{item.year}} Semester {{item.sem}}</h4>
-            <p class="list-group-item-text">Date: {{item.date | date:'dd MMMM, yyyy'}}</p>
-            <a href="#/defaulters" ng-click="download(item.base64)">Download this defaulter</a>
-          </div>
-        </div>
+        <table class="table table-condensed">
+          <tr>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Link</th>
+          </tr>
+          <tr ng-repeat="item in defaulters">
+            <td>{{item.dept}} {{item.year}} Sem {{item.sem}}</td>
+            <td>{{item.date | date:'dd MMMM, yyyy'}}</td>
+            <td><a href="#/defaulters" ng-click="download(item.base64)">Download</a></td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

@@ -18,6 +18,12 @@
         <input type="textarea" id="body" class="form-control" placeholder="Notification body" ng-model="notif.body"
                required>
       </div>
+      <div class="input-group">
+        <label for="tokens" class="sr-only">Password</label>
+        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+        <input type="textarea" id="tokens" class="form-control" placeholder="tokens" ng-model="notif.tokens"
+               required>
+      </div>
       <button class="btn btn-primary btn-block" ng-click="push(notif)">Push</button>
     </form>
   </div>
