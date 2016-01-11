@@ -1,0 +1,18 @@
+<h4>Data Entry</h4>
+<form name="form" enctype="multipart/form-data">
+
+  <button class="btn btn-default" ng-click="download()">download excel format</button>
+
+  <div class='form-group'>
+    <div class="input-group">
+      <span class="input-group-addon" id="basic-addon3">Choose your excel file</span>
+      <input class="form-control" type="file" id="excel_file" accept=".xlsx, .xls" onchange="angular.element(this).scope().fileChanged(this.files);">
+    </div>
+  </div>
+  <div class="alert alert-success" ng-show="!isProcessing">
+    Sheet Loaded
+  </div>
+  <div class="alert alert-success" ng-if="success">{{success}}</div>
+  <button class="btn btn-info" ng-disabled="isProcessing" ng-click="upload()">Upload to database</button>
+  <div cg-busy="{promise:loading, message:'Uploading..', backdrop:true}"></div>
+</form>

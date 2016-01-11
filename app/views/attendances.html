@@ -1,0 +1,20 @@
+<div cg-busy="{promise:promise, message:'Loading..', backdrop:true}"></div>
+
+<table class="table table-striped">
+  <tr>
+    <th>Sr. No</th>
+    <th>Dept</th>
+    <th>Sem</th>
+    <th>Subject</th>
+    <th>Absent Numbers</th>
+    <th>Date</th>
+  </tr>
+  <tr ng-repeat="item in attendances track by $index">
+    <td>{{$index + 1}}</td>
+    <td>{{item.dept}}</td>
+    <td>{{item.semester}}</td>
+    <td>{{item.subid}}</td>
+    <td>{{item.absentno}}</td>
+    <td style="min-width:100px">{{item.date}}</td>
+  </tr>
+</table>

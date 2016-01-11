@@ -1,0 +1,15 @@
+<div class="row" ng-if="$storage.userData.role == 'admin'">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Generate Defaulters for {{$storage.userData.dept}} {{$storage.userData.year}} {{$storage.userData.sem}}</h3>
+      </div>
+      <div class="panel-body">
+        <form class="form-signin">
+          <button class="btn btn-primary btn-block" ng-click="generate($storage.userData.dept,$storage.userData.year,$storage.userData.sem)">Go</button>
+          <div cg-busy="{promise:promise, message:'Loading ..', backdrop:true}"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
