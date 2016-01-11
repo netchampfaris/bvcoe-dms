@@ -58,7 +58,7 @@ angular
         }
       })
       .when('/dashboard', {
-        templateUrl: 'views/dashboard.html',
+        templateUrl: 'views/attendances.html',
         controller: 'DashboardCtrl',
         controllerAs: 'dashboard',
         resolve: {
@@ -100,6 +100,12 @@ angular
         controller: 'GendefaulterCtrl',
         controllerAs: 'genDefaulter'
       })
+      .when('/takeAttendance',{
+          templateUrl:'views/takeAttendance.html',
+          controller: 'TakeAttendanceCtrl',
+        controllerAs: 'takeAttendance'
+      })
+          
       .otherwise({
         redirectTo: '/'
       });
