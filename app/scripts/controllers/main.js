@@ -10,7 +10,9 @@
 angular.module('bvcoeDmsApp')
   .controller('MainCtrl', function (FirebaseRef, $scope, $location, $rootScope, $q, isNewUser) {
 
-    $rootScope.authData = FirebaseRef.getAuth();
+    //$rootScope.authData = FirebaseRef.getAuth();
+
+    $rootScope.$storage.authData = FirebaseRef.getAuth();
 
     $scope.depts = [];
 
@@ -29,6 +31,13 @@ angular.module('bvcoeDmsApp')
                   console.log('token removed '+tokenkey);
                 });
               }
+            });
+          }
+          else //get the role of user
+          {
+            FirebaseRef.child('teachers/'+authData.uid).once('value',function(data){
+              $rootScope.$storage.userData = data.val();
+              $rootScope.$apply();
             });
           }
           console.log("Logged in as:", authData.uid);
@@ -65,7 +74,7 @@ angular.module('bvcoeDmsApp')
           $scope.login.success = false;
           defer.reject();
         } else {
-          console.log("Authenticated successfully with payload:", authData);
+          //console.log("Authenticated successfully with payload:", authData);
           $scope.login.success = true;
           $scope.login.message = '';
           defer.resolve();

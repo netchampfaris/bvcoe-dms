@@ -17,26 +17,27 @@ angular
     'ngSanitize',
     'ngTouch',
     'firebase',
-    'cgBusy'
+    'cgBusy',
+    'ngStorage'
   ])
-  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location) {
-
-    $rootScope.authData = FirebaseRef.getAuth();
+  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage) {
+    $rootScope.$storage = $localStorage;
+    $rootScope.$storage.authData = FirebaseRef.getAuth();
 
     FirebaseRef.onAuth(function(authData) {
       if (authData) {
         console.log("Logged in as:", authData.uid);
-        $rootScope.access = true;
         $location.path('/dashboard');
       } else {
         console.log("Logged out");
-        $rootScope.access = false;
       }
-      $rootScope.authData = FirebaseRef.getAuth();
+      $rootScope.$storage.authData = FirebaseRef.getAuth();
     });
 
     $rootScope.logout = function () {
       FirebaseRef.unauth();
+      delete $rootScope.$storage.authData;
+      delete $rootScope.$storage.userData;
     }
 
   })
@@ -93,6 +94,11 @@ angular
         templateUrl: 'views/attendances.html',
         controller: 'AttendancesCtrl',
         controllerAs: 'attendances'
+      })
+      .when('/genDefaulter', {
+        templateUrl: 'views/gendefaulter.html',
+        controller: 'GendefaulterCtrl',
+        controllerAs: 'genDefaulter'
       })
       .otherwise({
         redirectTo: '/'

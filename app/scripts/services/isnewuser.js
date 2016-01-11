@@ -14,9 +14,10 @@ angular.module('bvcoeDmsApp')
       var defer = $q.defer();
       var isNew = true;
       FirebaseRef.child('teachers').once('value', function(snapshot) {
+
         for(var dept in snapshot.val())
         {
-          for(var uid in snapshot.val()[dept]) {
+          for(var uid in snapshot.val()) {
             if(authData.uid == uid){
               isNew = false;
             }
