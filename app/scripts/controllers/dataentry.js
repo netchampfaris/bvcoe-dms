@@ -56,7 +56,7 @@ angular.module('bvcoeDmsApp')
          break;
         i++;
       };
-      FirebaseRef.child('studentCount/'+dept+'/'+key).set({
+      FirebaseRef.child('studentCount/'+dept+'/'+key).update({
         batchno: batchno,
         count: totalStudents,
         dept: dept,
@@ -79,14 +79,15 @@ angular.module('bvcoeDmsApp')
             var rollpad = pad.substring(0, pad.length - str.length) + str;
             var key = dept + year + rollpad;*/
 
-            FirebaseRef.child('students/'+dept+'/'+key).set({
+            FirebaseRef.child('students/'+dept+'/'+key).update({
 
               name: name,
               phone: phone,
               parents_phone: pphone,
               rollno: roll,
               year: year,
-              gender: gender
+              gender: gender,
+              uid:key
 
             }, function (error) {
               if(error) console.log(error);
@@ -116,7 +117,7 @@ angular.module('bvcoeDmsApp')
                   }
                   console.log(pteacher);
 
-                  FirebaseRef.child('subjects/'+dept+'/'+key).set({
+                  FirebaseRef.child('subjects/'+dept+'/'+key).update({
 
                     fullname: fullname,
                     name: sname,
@@ -137,7 +138,7 @@ angular.module('bvcoeDmsApp')
                       if(dept.indexOf('-') != -1)
                         division = dept.substr(dept.length-1);
 
-                      FirebaseRef.child('departments/'+dept).set({
+                      FirebaseRef.child('departments/'+dept).update({
                         name: deptname,
                         div: division
                       }, function (error) {
