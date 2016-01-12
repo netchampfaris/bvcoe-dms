@@ -99,21 +99,22 @@ angular.module('bvcoeDmsApp')
                   var sname = sheets.subjects[i]['short name'];
                   var theory = (sheets.subjects[i].theory == 'yes');
                   var practical = (sheets.subjects[i].practical == 'yes');
-                  var teacher = sheets.subjects[i]['theory teacher'];
+                  var teacher = sheets.subjects[i]['theory teacher'] || null;
                   var key = sheets.subjects[i]['subject code'];
                   var pteacher = {};
 
                   var j = 1;
                   while(j<5)
                   {
-                    if(sheets.subjects[j]['batch '+j+' teacher'] !== undefined)
+                    if(sheets.subjects[i]['batch '+j+' teacher'] !== undefined)
                     {
-                      pteacher[j] = sheets.subjects[j]['batch '+j+' teacher'];
+                      pteacher[j] = sheets.subjects[i]['batch '+j+' teacher'];
                     }
                     else
                       break;
                     j++;
                   }
+                  console.log(pteacher);
 
                   FirebaseRef.child('subjects/'+dept+'/'+key).set({
 
