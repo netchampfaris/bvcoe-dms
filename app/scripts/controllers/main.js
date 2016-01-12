@@ -42,7 +42,7 @@ angular.module('bvcoeDmsApp')
                         });
                     }
                     console.log("Logged in as:", authData.uid);
-                    $location.path('/dashboard');
+                    $location.path('/attendances');
 
                 }, function () { });
 

@@ -58,7 +58,7 @@ angular
         }
       })
       .when('/dashboard', {
-        templateUrl: 'views/attendances.html',
+        templateUrl: 'views/dashboard.html',
         controller: 'DashboardCtrl',
         controllerAs: 'dashboard',
         resolve: {
@@ -105,7 +105,7 @@ angular
           controller: 'TakeAttendanceCtrl',
         controllerAs: 'takeAttendance'
       })
-          
+
       .otherwise({
         redirectTo: '/'
       });

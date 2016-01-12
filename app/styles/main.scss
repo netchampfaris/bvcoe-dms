@@ -119,3 +119,9 @@ if it's not present, don't show loader */
 }
 
 
+/*container*/
+@media (min-width: 1200px) {
+  .container{
+    max-width: 970px;
+  }
+}

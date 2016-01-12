@@ -11,6 +11,7 @@ angular.module('bvcoeDmsApp')
   .controller('AttendancesCtrl', function ($rootScope, $scope, FirebaseRef, $q) {
 
     $scope.attendances = [];
+    console.log('test');
 
     var defer = $q.defer();
     FirebaseRef.child('attendances').once('value', function (snapshot) {
