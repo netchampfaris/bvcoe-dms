@@ -11,6 +11,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-busy/dist/angular-busy.css" />
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -44,7 +45,7 @@
 
                     <div class="collapse navbar-collapse" id="js-navbar-collapse">
                         <ul class="nav navbar-nav navbar-left" ng-if="$storage.authData">
-                            <li><a href="#/dashboard">Dashboard</a></li>
+                            <li><a href="#/attendances">Attendances</a></li>
                             <li><a href="#/defaulters">View Defaulters</a></li>
                             <li><a ng-href="#/dataentry" ng-if="$storage.userData.role == 'admin'">Data Entry</a></li>
                             <li ng-if="$storage.userData.role == 'admin'"><a href="#/genDefaulter">Generate Defaulters</a></li>
@@ -114,6 +115,7 @@
     <script src="bower_components/js-xlsx/dist/xlsx.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/ngstorage/ngStorage.js"></script>
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -132,6 +134,9 @@
     <script src="scripts/services/xslxreaderservice.js"></script>
     <script src="scripts/controllers/attendances.js"></script>
     <script src="scripts/controllers/gendefaulter.js"></script>
+    <script src="scripts/services/restapiurl.js"></script>
+    <script src="scripts/controllers/extras.js"></script>
+    <script src="scripts/filters/orderobjectby.js"></script>
     <!-- endbuild -->
 
     <script>

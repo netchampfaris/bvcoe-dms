@@ -1,0 +1,14 @@
+<h3>{{$storage.userData.dept}} {{$storage.userData.year}} sem{{$storage.userData.sem}}</h3>
+<div cg-busy="{promise:stuPromise}"></div>
+<table class="table table-striped">
+  <tr>
+    <th>Rollno</th>
+    <th>Name</th>
+    <th>Extra Curricular Attendance</th>
+  </tr>
+  <tr ng-repeat="student in students | orderObjectBy:'rollno':false">
+    <td>{{student.rollno}}</td>
+    <td>{{student.name}}</td>
+    <td><a href="#" editable-text="student.extra" onbeforesave="updateExtra(student, $data)">{{ student.extra || "0" }}</a></td>
+  </tr>
+</table>

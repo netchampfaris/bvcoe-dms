@@ -18,9 +18,10 @@ angular
     'ngTouch',
     'firebase',
     'cgBusy',
-    'ngStorage'
+    'ngStorage',
+    'xeditable'
   ])
-  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage) {
+  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions) {
     $rootScope.$storage = $localStorage;
     $rootScope.$storage.authData = FirebaseRef.getAuth();
 
@@ -38,7 +39,9 @@ angular
       FirebaseRef.unauth();
       delete $rootScope.$storage.authData;
       delete $rootScope.$storage.userData;
-    }
+    };
+
+    editableOptions.theme = 'bs3';
 
   })
   .config(function ($routeProvider, $httpProvider) {
@@ -106,6 +109,11 @@ angular
         controllerAs: 'takeAttendance'
       })
 
+      .when('/extras', {
+        templateUrl: 'views/extras.html',
+        controller: 'ExtrasCtrl',
+        controllerAs: 'extras'
+      })
       .otherwise({
         redirectTo: '/'
       });
