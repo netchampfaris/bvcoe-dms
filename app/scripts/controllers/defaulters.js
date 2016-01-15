@@ -61,18 +61,19 @@ angular.module('bvcoeDmsApp')
       var deferred = $q.defer();
       FirebaseRef.child('defaulters/'+dept).once('value',function (snapshot) {
         var defaulters = [];
-        console.log(snapshot.val());
+
         for(var key in snapshot.val())
         {
           var res = key.split("-");
           //console.log(res);
-          defaulters.push({
-            dept: res[1].toUpperCase(),
-            year: res[2].toUpperCase(),
-            sem: res[3].substr(3),
-            date: res[4]+'-'+res[5]+'-'+res[6],
-            base64: snapshot.val()[key].excel
-          });
+          if(dept == res[1] && year == res[2] && sem == res[3].substr(3))
+            defaulters.push({
+              dept: res[1].toUpperCase(),
+              year: res[2].toUpperCase(),
+              sem: res[3].substr(3),
+              date: res[4]+'-'+res[5]+'-'+res[6],
+              base64: snapshot.val()[key].excel
+            });
         }
         $scope.defaulters = defaulters;
         deferred.resolve();
@@ -86,9 +87,6 @@ angular.module('bvcoeDmsApp')
     };
 
     $scope.download = function(base64) {
-      window.open (base64, "somefile", "width=600,height=300,resizable=1");
+      window.open (base64, '_blank');
     }
-
-
-
   });

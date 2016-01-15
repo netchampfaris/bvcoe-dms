@@ -2,10 +2,10 @@
 
 /**
  * @ngdoc service
- * @name bvcoeDmsApp.firebaseurl
+ * @name bvcoeDmsApp.restapiurl
  * @description
- * # firebaseurl
+ * # restapiurl
  * Constant in the bvcoeDmsApp.
  */
 angular.module('bvcoeDmsApp')
-  .constant('firebaseurl', 'https://hazri.firebaseio.com');
+  .constant('restapiurl', 'http://bvcoeportal.orgfree.com');

@@ -8,13 +8,13 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('GendefaulterCtrl', function ($scope,$http, $q) {
+  .controller('GendefaulterCtrl', function ($scope,$http, $q, restapiurl) {
 
     $scope.generate = function (dept, year, sem) {
       var defer = $q.defer();
       $http({
         method: 'GET',
-        url: 'http://bvcoeportal.orgfree.com/defaulters/generate_defaulter_api.php/'+dept+'/'+year+'/'+sem
+        url: restapiurl+'/defaulters/generate_defaulter_api.php/'+dept+'/'+year+'/'+sem
       }).then(function successCallback(response) {
         // this callback will be called asynchronously
         // when the response is available
