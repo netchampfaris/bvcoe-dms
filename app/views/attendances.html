@@ -2,19 +2,53 @@
 
 <table class="table table-striped">
   <tr>
-    <th>Sr. No</th>
-    <th>Dept</th>
-    <th>Sem</th>
+    <th style="width:5%">Sr. No</th>
+    <th style="width:10%">Class</th>
     <th>Subject</th>
+    <th>Type</th>
     <th>Absent Numbers</th>
     <th>Date</th>
+    <th>Edit</th>
   </tr>
-  <tr ng-repeat="item in attendances track by $index">
+  <tr ng-repeat="(key, item) in attendances track by $index">
     <td>{{$index + 1}}</td>
-    <td>{{item.dept}}</td>
-    <td>{{item.semester}}</td>
-    <td>{{item.subid}}</td>
-    <td>{{item.absentno}}</td>
-    <td style="min-width:100px">{{item.date}}</td>
+    <td>
+      <span>{{showDept(item.dept)}}</span>
+
+      <span>{{(item.year).toUpperCase()}}</span>
+
+      <span>{{showSem(item.semester)}}</span>
+    </td>
+    <td>
+      <span>{{showSub(item.subid)}}</span>
+    </td>
+    <td>
+      <span>{{showType(item)}}</span>
+    </td>
+    <td>
+      <span>
+        <a href="" title="" data-toggle="popover" data-content="{{showAbsent(item.absentno)}}" data-trigger="hover">Absentees</a>
+      </span>
+    </td>
+    <td>
+      <a editable-bsdate="item.date" e-datepicker-popup="dd-MMMM-yyyy" e-form="rowform">
+        {{item.date | date:dd/MM/yyyy}}
+      </a>
+    </td>
+    <td style="white-space: nowrap">
+      <form editable-form name="rowform" onbeforesave="saveAtt($data, key, item)" ng-show="rowform.$visible" class="form-buttons form-inline">
+        <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
+          save
+        </button>
+        <button type="button" ng-disabled="rowform.$waiting" ng-click="cancel(rowform)" class="btn btn-default">
+          cancel
+        </button>
+      </form>
+      <div class="buttons" ng-show="!rowform.$visible">
+        <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
+        <button class="btn btn-danger" ng-click="">del</button>
+      </div>
+    </td>
   </tr>
 </table>
+

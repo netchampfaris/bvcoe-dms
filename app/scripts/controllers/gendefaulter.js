@@ -16,9 +16,9 @@ angular.module('bvcoeDmsApp')
         method: 'GET',
         url: restapiurl+'/defaulters/generate_defaulter_api.php/'+dept+'/'+year+'/'+sem
       }).then(function successCallback(response) {
-        // this callback will be called asynchronously
-        // when the response is available
+        console.log(response);
         defer.resolve();
+        alert('Defaulter generated successfully');
       }, function errorCallback(response) {
         // called asynchronously if an error occurs
         // or server returns response with an error status.
@@ -27,5 +27,6 @@ angular.module('bvcoeDmsApp')
       $scope.promise = defer.promise;
 
     }
+
 
   });

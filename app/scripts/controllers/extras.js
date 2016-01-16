@@ -8,16 +8,17 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('ExtrasCtrl', function ($scope, FirebaseRef, $q) {
+  .controller('ExtrasCtrl', function ($scope, FirebaseRef, $q, $rootScope) {
 
-    var dept = 'cs';
+    var dept = $rootScope.$storage.userData.dept;
     var dfd = $q.defer();
-    FirebaseRef.child('students/'+dept).orderByChild('year').equalTo('be').once('value', function (data) {
+    FirebaseRef.child('students/'+dept).orderByChild('year').equalTo($rootScope.$storage.userData.year).once('value', function (data) {
       $scope.students = data.val();
 
-      FirebaseRef.child('extras/'+dept).orderByChild('year').equalTo('be').once('value', function (snap) {
+      FirebaseRef.child('extras/'+dept).orderByChild('year').equalTo($rootScope.$storage.userData.year).once('value', function (snap) {
 
         var extras = snap.val();
+        //console.log(extras);
         for(var extra in extras)
         {
           $scope.students[extra]['extra'] = extras[extra]['extra'];

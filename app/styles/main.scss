@@ -122,6 +122,14 @@ if it's not present, don't show loader */
 /*container*/
 @media (min-width: 1200px) {
   .container{
-    max-width: 970px;
+    max-width: 1080px;
   }
+}
+
+/*table*/
+table {
+  table-layout: fixed;
+}
+td {
+  word-wrap: break-word;
 }

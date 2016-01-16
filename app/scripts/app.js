@@ -19,16 +19,17 @@ angular
     'firebase',
     'cgBusy',
     'ngStorage',
-    'xeditable'
+    'xeditable',
+    'ui.bootstrap'
   ])
-  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions) {
+  .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions, $route) {
     $rootScope.$storage = $localStorage;
     $rootScope.$storage.authData = FirebaseRef.getAuth();
 
     FirebaseRef.onAuth(function(authData) {
       if (authData) {
         console.log("Logged in as:", authData.uid);
-        $location.path('/dashboard');
+        $location.path('/attendances');
       } else {
         console.log("Logged out");
       }
@@ -39,6 +40,7 @@ angular
       FirebaseRef.unauth();
       delete $rootScope.$storage.authData;
       delete $rootScope.$storage.userData;
+      $location.path('/')
     };
 
     editableOptions.theme = 'bs3';
@@ -96,25 +98,61 @@ angular
       .when('/attendances', {
         templateUrl: 'views/attendances.html',
         controller: 'AttendancesCtrl',
-        controllerAs: 'attendances'
+        controllerAs: 'attendances',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
       })
       .when('/genDefaulter', {
         templateUrl: 'views/gendefaulter.html',
         controller: 'GendefaulterCtrl',
-        controllerAs: 'genDefaulter'
+        controllerAs: 'genDefaulter',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
       })
       .when('/takeAttendance',{
           templateUrl:'views/takeAttendance.html',
           controller: 'TakeAttendanceCtrl',
-        controllerAs: 'takeAttendance'
+        controllerAs: 'takeAttendance',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
       })
 
       .when('/extras', {
         templateUrl: 'views/extras.html',
         controller: 'ExtrasCtrl',
-        controllerAs: 'extras'
+        controllerAs: 'extras',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/attendances'
       });
   });
