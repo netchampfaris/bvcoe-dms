@@ -8,6 +8,7 @@
         <form class="form-signin">
           <button class="btn btn-primary btn-block" ng-click="generate($storage.userData.dept,$storage.userData.year,$storage.userData.sem)">Go</button>
           <div cg-busy="{promise:promise, message:'Loading ..', backdrop:true}"></div>
+          <button ng-if="defaulters" class="btn btn-primary btn-block" ng-click="viewDefaulters()">View Defaulters</button>
         </form>
       </div>
     </div>
