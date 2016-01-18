@@ -1,0 +1,24 @@
+<div class="modal-header">
+  <h3 class="modal-title">I'm a modal!</h3>
+</div>
+<div class="modal-body">
+
+  <table class="table table-bordered">
+    <tr>
+      <th>Rollno</th>
+      <th>Name</th>
+      <th>Attendance</th>
+      <th>Parents Phone</th>
+    </tr>
+    <tr ng-repeat="(uid, student) in students track by uid" ng-if="checkDefaulter(student.percent)">
+      <td>{{student.rollno}}</td>
+      <td>{{student.name}}</td>
+      <td>{{student.percent}}</td>
+      <td>{{student.pphone}}</td>
+    </tr>
+  </table>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="">Send SMS</button>
+  <button class="btn btn-warning" type="button" ng-click="">Cancel</button>
+</div>
