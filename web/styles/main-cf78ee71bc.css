@@ -9078,3 +9078,51 @@ a.button {
 .att-card-fix {
   margin-top: 10px !important;
   margin-bottom: 10px !important; }
+
+.absent-badge {
+  padding: 3px 8px;
+  min-width: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 14px;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline-block;
+  background-color: #FF5252;
+  color: #FFFFFF; }
+
+.col-offset-2 {
+  margin-left: 2%; }
+
+.col-30 {
+  -moz-flex: 0 0 30%;
+  flex: 0 0 30%;
+  max-width: 30%; }
+
+
+#btn-container {
+  margin-top: 2% !important;
+  margin-bottom: 10%; }
+
+#studentbtn {
+  padding: 5px; }
+
+i.icon.icon-small::before {
+  font-size: 20px; }
+
+
+.button-google {
+  background-color: #dd4b39;
+  border-color: transparent;
+  color: #fff !important; }
+  .button-google.active, .button-google.activated {
+    background-color: #c23321;
+    color: #fff !important; }
+
+.button-facebook {
+  background-color: #3b5998;
+  border-color: transparent;
+  color: #fff !important; }
+  .button-facebook.active, .button-facebook.activated {
+    background-color: #2d4373;
+    color: #fff !important; }
