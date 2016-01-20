@@ -8,7 +8,10 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('AttendancesCtrl', function ($rootScope, $scope, FirebaseRef, $q, $filter) {
+  .controller('AttendancesCtrl', function ($rootScope, $scope, FirebaseRef, $q, $filter, $localStorage) {
+
+    var students = {};
+
 
     var getAttendances = function () {
       $scope.attendances = [];
@@ -26,7 +29,7 @@ angular.module('bvcoeDmsApp')
     var getStudents = function () {
       var defer = $q.defer();
       FirebaseRef.child('students/'+$rootScope.$storage.userData.dept).once('value', function (data) {
-        $scope.students = data.val();
+        students = data.val();
         defer.resolve();
       }, function (err) {
         defer.reject();
@@ -54,17 +57,20 @@ angular.module('bvcoeDmsApp')
       return defer.promise;
     }
 
-    var defer = $q.defer();
-    getAttendances().then(function () {
-      getStudents().then(function () {
-        getDepts().then(function () {
-          getSubjects().then(function () {
-            defer.resolve();
+    $scope.loadAttendanceData = function () {
+      var defer = $q.defer();
+      getAttendances().then(function () {
+        getStudents().then(function () {
+          getDepts().then(function () {
+            getSubjects().then(function () {
+
+              defer.resolve();
+            })
           })
         })
-      })
-    })
-    $scope.promise = defer.promise;
+      });
+      $scope.promise = defer.promise;
+    };
 
 
     $scope.years = [
@@ -127,7 +133,7 @@ angular.module('bvcoeDmsApp')
     $scope.showType = function(item) {
       if(item.type == 'th')
         return 'Theory';
-      else(item.type == 'pr')
+      else if(item.type == 'pr')
       {
         return 'Practical:  Batch '+item.batchno;
       }
@@ -146,22 +152,84 @@ angular.module('bvcoeDmsApp')
 
     $scope.showAbsent = function(absentno){
       var absent = [];
-      if(absentno){
-        absent = _.filter($scope.students, function(s) { return _.includes(absentno, s.uid) });
+      if(typeof absentno != 'undefined'){
+        absent = _.filter(students, function(s) { return _.includes(absentno, s.uid) });
+        return _.map(absent, 'rollno').sort(natural).join(', ');
       }
-      return _.pluck(absent, 'rollno').sort(natural).join(', ');
+/*      else if(typeof absentno == 'undefined') {
+        console.log('undefined')
+      }*/
+        return "No absentees";
+    };
+
+    $scope.checkRoll = function (att, data) {
+      //get roll no of students
+      var studentrolls = _.chain(students).filter(function (s) {
+        return s.year == att.year;
+      }).map('rollno').sort(natural).value();
+      //split string by , or   (there's a space here)
+      var absents = data.split(/[ ,]+/);
+      console.log(absents.length);
+      //check validity of roll no
+      if(_.every(absents, function (a) {
+          return _.includes(studentrolls, a);
+        }))
+      {
+      }
+      else if(absents[0] == ""){}
+      else  return 'Some roll numbers are invalid';
+
+    };
+
+    $scope.saveAtt = function (key, att, data) {
+
+      console.log(key);
+      console.log(att);
+      console.log(data);
+
+      //split string by , or   (there's a space here)
+      var absentrolls = data.absentno.split(/[ ,]+/);
+      var uids = _.chain(students).filter(function (s) { return s.year == att.year; }).map('uid').value();
+
+      var absentuids = _.chain(students).filter(function (s) { return s.year == att.year && _.includes(absentrolls, s.rollno) }).map('uid').value();
+      if(absentrolls[0] == "") absentuids = [];
+
+      var presentuids = _.difference(uids, absentuids);
+
+      var defer = $q.defer();
+      FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).update({
+        absentno: absentuids,
+        date: data.date,
+        dept: att.dept,
+        noofhours: att.noofhours,
+        presentno: presentuids,
+        semester: att.semester,
+        subid: att.subid,
+        teacher: att.teacher,
+        timestamp: Firebase.ServerValue.TIMESTAMP,
+        topic: att.topic,
+        type: att.type,
+        year: att.year
+      }, function (error) {
+        if(error){
+          console.log(error)
+          defer.reject();
+        }
+        else{
+          $scope.attendances[key]['absentno'] = absentuids;
+          $scope.attendances[key]['presentno'] = presentuids;
+          defer.resolve();
+        }
+      })
+      return defer.promise;
+    }
+    $scope.deleteAtt = function (key) {
+      console.log('del');
+      console.log(key);
+      FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).remove();
+      delete $scope.attendances[key];
     }
 
-    $scope.saveAtt = function (data, key, item) {
-      console.log(data);
-      console.log(key);
-      console.log(item);
-    }
-    $scope.delAtt = function (data, key, item) {
-      console.log(data);
-      console.log(key);
-      console.log(item);
-    }
     $scope.cancel = function(rowform){
       rowform.$cancel();
     }

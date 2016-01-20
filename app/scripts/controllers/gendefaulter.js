@@ -33,7 +33,7 @@ angular.module('bvcoeDmsApp')
 
       var modalInstance = $uibModal.open({
         animation: true,
-        templateUrl: 'views/mymodal.html',
+        templateUrl: 'views/modals/mymodal.html',
         controller: 'ModalCtrl',
         size: 'lg',
         resolve: {

@@ -20,7 +20,8 @@ angular
     'cgBusy',
     'ngStorage',
     'xeditable',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'angular-confirm'
   ])
   .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions, $route) {
     $rootScope.$storage = $localStorage;

@@ -1,5 +1,5 @@
 <div cg-busy="{promise:promise, message:'Loading..', backdrop:true}"></div>
-
+<button class="btn btn-default" ng-click="loadAttendanceData()">Load Attendances</button>
 <table class="table table-striped">
   <tr>
     <th style="width:5%">Sr. No</th>
@@ -29,24 +29,26 @@
       <span>
         <a href="" title="" data-toggle="popover" data-content="{{showAbsent(item.absentno)}}" data-trigger="hover">Absentees</a>
       </span>
+      <span editable-text="item.absentnostring" onshow="item.absentnostring = showAbsent(item.absentno)" e-name="absentno" e-form="rowform" onbeforesave="checkRoll(item, $data)">
+      </span>
     </td>
     <td>
-      <a editable-bsdate="item.date" e-datepicker-popup="dd-MMMM-yyyy" e-form="rowform">
+      <a editable-text="item.date" e-form="rowform" e-name="date">
         {{item.date | date:dd/MM/yyyy}}
       </a>
     </td>
     <td style="white-space: nowrap">
-      <form editable-form name="rowform" onbeforesave="saveAtt($data, key, item)" ng-show="rowform.$visible" class="form-buttons form-inline">
+      <form editable-form name="rowform" onbeforesave="saveAtt(key, item, $data)" ng-show="rowform.$visible" class="form-buttons form-inline">
         <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary">
           save
         </button>
+        <button class="btn btn-danger" confirm="Are you sure to delete this attendance from database?" ng-disabled="rowform.$waiting" ng-click="deleteAtt(key)">del</button>
         <button type="button" ng-disabled="rowform.$waiting" ng-click="cancel(rowform)" class="btn btn-default">
           cancel
         </button>
       </form>
       <div class="buttons" ng-show="!rowform.$visible">
         <button class="btn btn-primary" ng-click="rowform.$show()">edit</button>
-        <button class="btn btn-danger" ng-click="">del</button>
       </div>
     </td>
   </tr>
