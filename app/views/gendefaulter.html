@@ -1,4 +1,4 @@
-<div class="row" ng-if="$storage.userData.role == 'admin'">
+<div class="row" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">
   <div class="col-md-6">
     <div class="panel panel-default">
       <div class="panel-heading">
@@ -8,8 +8,8 @@
         <form class="form-signin">
           <button class="btn btn-primary btn-block" ng-click="generate($storage.userData.dept,$storage.userData.year,$storage.userData.sem)">Go</button>
           <div cg-busy="{promise:promise, message:'Loading ..', backdrop:true}"></div>
-          <button ng-if="defaulters" class="btn btn-primary btn-block" ng-click="viewDefaulters()">View Defaulters</button>
-        </form>
+          <div class="alert alert-success" ng-if="message.success">Defaulter generated successfully. Go to <a href="#/defaulters">View defaulters</a> to view it.</div>
+          </form>
       </div>
     </div>
   </div>

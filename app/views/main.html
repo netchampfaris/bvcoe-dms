@@ -7,14 +7,14 @@
             <div class="panel-body">
                 <form class="form-signin">
                     <div class="input-group">
-                        <label for="inputEmail" class="sr-only">Email address</label>
+                        <label for="loginEmail" class="sr-only">Email address</label>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                        <input type="email" id="inputEmail" class="form-control" placeholder="Email address" ng-model="user.email" required autofocus>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Email address" ng-model="user.email" required autofocus>
                     </div>
                     <div class="input-group">
-                        <label for="inputPassword" class="sr-only">Password</label>
+                        <label for="loginPassword" class="sr-only">Password</label>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                        <input type="password" id="inputPassword" class="form-control" placeholder="Password" ng-model="user.pass" required>
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Password" ng-model="user.pass" required>
                     </div>
                     <button class="btn btn-primary btn-block" ng-click="login(user)">Sign in</button>
                     <div cg-busy="{promise:promise, message:'Signing in..', backdrop:true}"></div>
@@ -76,12 +76,17 @@
                     <div class="input-group">
                         <label>Teacher Type:</label>
                         <div class="radio">
-                            <label>
-                                <input type="radio" name="teacherRole" value="admin" ng-model="reg.teacherrole">HOD/ClassAdvisor</label>
-                        
-                            <label>
-                                <input type="radio" name="teacherRole" value="" ng-model="reg.teacherrole">Normal</label>
+                            <label><input type="radio" name="teacherRole" value="hod" ng-model="reg.teacherrole" ng-click="reg.year = null">HOD</label>
+                            <label><input type="radio" name="teacherRole" value="advisor" ng-model="reg.teacherrole">ClassAdvisor</label>
+                            <label><input type="radio" name="teacherRole" value="normal" ng-model="reg.teacherrole" ng-click="reg.year = null" ng-checked="true">Normal</label>
                         </div>
+                    </div>
+                    <div class="input-group" ng-if="reg.teacherrole == 'advisor'">
+                      <label for="inputYear" class="sr-only">Year</label>
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-briefcase"></span></span>
+                      <select id="inputYear" class="form-control" ng-model="reg.year" ng-change="sems = years[reg.year]['sems']">
+                        <option ng-repeat="year in years" value="{{year.id}}">{{year.name}}</option>
+                      </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block" ng-disabled="regform.$invalid">Register</button>
                     <div cg-busy="regpromise"></div>

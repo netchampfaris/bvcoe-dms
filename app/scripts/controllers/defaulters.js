@@ -8,8 +8,11 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q) {
+  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q, $uibModal) {
 
+    $scope.sms = {
+      success: false
+    };
 
     $scope.depts = [];
     $scope.years = [
@@ -72,12 +75,13 @@ angular.module('bvcoeDmsApp')
               year: res[2].toUpperCase(),
               sem: res[3].substr(3),
               date: res[4]+'-'+res[5]+'-'+res[6],
-              base64: snapshot.val()[key].excel
+              base64: snapshot.val()[key].excel,
+              percentData: snapshot.val()[key].percentData
             });
         }
         $scope.defaulters = defaulters;
         deferred.resolve();
-        //console.log($scope.defaulters);
+        console.log($scope.defaulters);
         $scope.$apply();
       }, function (err) {
         console.log(err);
@@ -89,4 +93,28 @@ angular.module('bvcoeDmsApp')
     $scope.download = function(base64) {
       window.open (base64, '_blank');
     }
+
+    $scope.viewDefaulters = function (percentData) {
+
+      var modalInstance = $uibModal.open({
+        animation: true,
+        templateUrl: 'views/modals/mymodal.html',
+        controller: 'ModalCtrl',
+        size: 'lg',
+        resolve: {
+          defaulters: function () {
+            return percentData;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (smssent) {
+        $scope.sms.success = smssent;
+        console.log(smssent);
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+
+    };
+
   });

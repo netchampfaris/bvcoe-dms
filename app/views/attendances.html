@@ -4,11 +4,11 @@
   <tr>
     <th style="width:5%">Sr. No</th>
     <th style="width:10%">Class</th>
-    <th>Subject</th>
-    <th>Type</th>
+    <th style="width: 10%">Subject</th>
+    <th style="width: 10%">Type</th>
     <th>Absent Numbers</th>
-    <th>Date</th>
-    <th>Edit</th>
+    <th style="width: 12%">Date</th>
+    <th style="width: 5%">Edit</th>
   </tr>
   <tr ng-repeat="(key, item) in attendances track by $index">
     <td>{{$index + 1}}</td>
@@ -25,10 +25,10 @@
     <td>
       <span>{{showType(item)}}</span>
     </td>
-    <td>
-      <span>
+    <td style="z-index: 999;">
+      <div>
         <a href="" title="" data-toggle="popover" data-content="{{showAbsent(item.absentno)}}" data-trigger="hover">Absentees</a>
-      </span>
+      </div>
       <span editable-text="item.absentnostring" onshow="item.absentnostring = showAbsent(item.absentno)" e-name="absentno" e-form="rowform" onbeforesave="checkRoll(item, $data)">
       </span>
     </td>

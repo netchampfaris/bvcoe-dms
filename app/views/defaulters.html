@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-md-4">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">View Defaulters</h3>
@@ -39,7 +39,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6" ng-show="defaulters.length>0">
+  <div class="col-md-8" ng-show="defaulters.length>0">
     <div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">Defaulters</h3>
@@ -50,14 +50,19 @@
             <th>Name</th>
             <th>Date</th>
             <th>Link</th>
+            <th ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Send SMS</th>
           </tr>
           <tr ng-repeat="item in defaulters">
             <td>{{item.dept}} {{item.year}} Sem {{item.sem}}</td>
             <td>{{item.date | date:'dd MMMM, yyyy'}}</td>
             <td><a ng-click="download(item.base64)">Download</a></td>
+            <td ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">
+              <a href="" ng-click="viewDefaulters(item.percentData)">Defaulter students</a>
+            </td>
           </tr>
         </table>
       </div>
     </div>
   </div>
 </div>
+<div class="alert alert-success" ng-if="sms.success">Sms sent successfully</div>

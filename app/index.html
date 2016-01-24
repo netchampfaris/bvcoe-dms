@@ -50,25 +50,23 @@
                               <ul class="dropdown-menu">
                                 <li><a ng-href="#/attendances">View Attendances</a></li>
                                 <li><a ng-href="#/takeAttendance">Take Attendance</a></li>
-                                <li><a ng-href="#/extras" ng-if="$storage.userData.role == 'admin'">Extra Curricular Attendance</a></li>
+                                <li><a ng-href="#/extras" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Extra Curricular Attendance</a></li>
                               </ul>
                             </li>
                             <li class="dropdown">
                               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Defaulters <span class="caret"></span></a>
                               <ul class="dropdown-menu">
                                 <li><a ng-href="#/defaulters">View Defaulters</a></li>
-                                <li><a ng-href="#/genDefaulter" ng-if="$storage.userData.role == 'admin'">Generate Defaulter</a></li>
+                                <li><a ng-href="#/genDefaulter" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Generate Defaulter</a></li>
                               </ul>
                             </li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right" ng-if="$storage.authData">
                             <li class="dropdown">
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                    <!--<img src="{{$storage.authData.password.profileImageURL}}" class="img-circle gravatar">-->
                                     Welcome {{$storage.userData.name}} <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <!--<li role="separator" class="divider"></li>-->
-                                  <li><a ng-href="#/dataentry" ng-if="$storage.userData.role == 'admin'">Data Entry</a></li>
+                                  <li><a ng-href="#/dataentry" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Data Entry</a></li>
                                   <li><a ng-href="" ng-click="logout()">Logout</a></li>
                                 </ul>
                             </li>

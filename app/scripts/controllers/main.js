@@ -15,6 +15,8 @@ angular.module('bvcoeDmsApp')
         $rootScope.$storage.authData = FirebaseRef.getAuth();
 
         $scope.depts = [];
+        $scope.years = [];
+        $scope.sems = [];
 
         FirebaseRef.onAuth(function (authData) {
             if (authData) {
@@ -22,9 +24,11 @@ angular.module('bvcoeDmsApp')
                     console.log('new user: ' + isNew);
                     if (isNew) {
                         FirebaseRef.child('teachers/' + authData.uid).set({
-                            dept: $scope.reg.dept,
                             name: $scope.reg.name,
-                            role:$scope.reg.teacherrole
+                            role:$scope.reg.teacherrole,
+                            dept: $scope.reg.dept,
+                            year: $scope.reg.year
+
                             //add other details if you want
                         }, function () {
                             if (tokenkey) {
@@ -92,13 +96,24 @@ angular.module('bvcoeDmsApp')
             regSuccess: null,
             text: ''
         };
+
         var list = FirebaseRef.child('departments');
-        list.on('value', function (snapshot) {
-            for (var key in snapshot.val()) {
+        list.once('value', function (snapshot) {
+          for (var key in snapshot.val()) {
                 var curr = snapshot.val();
                 $scope.depts.push({ id: key, name: curr[key]['name'] });
+          }
+
+          FirebaseRef.child('year').once('value', function (years) {
+            years = years.val();
+            for(var year in years){
+              $scope.years.push({ id:year, name: years[year]['name'] });
             }
-            console.log('departments loaded');
+
+
+          });
+
+          console.log('departments loaded');
         }, function (err) {
             console.log(err);
         });
