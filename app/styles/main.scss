@@ -126,6 +126,15 @@ if it's not present, don't show loader */
   }
 }
 
+/*filter form*/
+.form-inline {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  .form-group{
+    margin-right: 4em;
+  }
+}
+
 /*table*/
 table {
   table-layout: fixed;

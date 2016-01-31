@@ -12,7 +12,6 @@ angular.module('bvcoeDmsApp')
 
     var students = {};
 
-
     var getAttendances = function () {
       $scope.attendances = [];
       var defer = $q.defer();
@@ -181,6 +180,8 @@ angular.module('bvcoeDmsApp')
 
     };
 
+    var svRef = new Firebase('https://hazrisv.firebaseio.com');
+
     $scope.saveAtt = function (key, att, data) {
 
       console.log(key);
@@ -197,38 +198,62 @@ angular.module('bvcoeDmsApp')
       var presentuids = _.difference(uids, absentuids);
 
       var defer = $q.defer();
-      FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).update({
-        absentno: absentuids,
-        date: data.date,
-        dept: att.dept,
-        noofhours: att.noofhours,
-        presentno: presentuids,
-        semester: att.semester,
-        subid: att.subid,
-        teacher: att.teacher,
-        timestamp: Firebase.ServerValue.TIMESTAMP,
-        topic: att.topic,
-        type: att.type,
-        year: att.year
-      }, function (error) {
-        if(error){
-          console.log(error)
-          defer.reject();
-        }
-        else{
-          $scope.attendances[key]['absentno'] = absentuids;
-          $scope.attendances[key]['presentno'] = presentuids;
-          defer.resolve();
-        }
-      })
+      //fetch old attendance before update
+      FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).once('value' , function (snap) {
+        var oldAtt = snap.val();
+        console.log('old', oldAtt);
+
+        //push old attendance in service queue
+        svRef.child('serviceQueue/changed/old/'+key).update(oldAtt, function(err){
+          if(!err){
+            //update changes
+            var newAtt = {
+              absentno: absentuids,
+              date: data.date,
+              dept: att.dept,
+              noofhours: att.noofhours,
+              presentno: presentuids,
+              semester: att.semester,
+              subid: att.subid,
+              teacher: att.teacher,
+              timestamp: Firebase.ServerValue.TIMESTAMP,
+              topic: att.topic,
+              type: att.type,
+              year: att.year
+            };
+            console.log('new', newAtt);
+            FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).update(newAtt, function (error) {
+              if(error){
+                console.log(error);
+                defer.reject();
+              }
+              else{
+                $scope.attendances[key]['absentno'] = absentuids;
+                $scope.attendances[key]['presentno'] = presentuids;
+                svRef.child('serviceQueue/changed/new/'+key).update(newAtt, function (err) {
+                  if(!err)  defer.resolve();
+                })
+              }
+            });
+          }
+          else defer.reject();
+        });
+      });
       return defer.promise;
-    }
-    $scope.deleteAtt = function (key) {
+    };
+
+
+    $scope.deleteAtt = function (key, rowform) {
       console.log('del');
       console.log(key);
       FirebaseRef.child('attendances/'+$localStorage.userData.dept+'/'+key).remove();
-      delete $scope.attendances[key];
-    }
+      svRef.child('serviceQueue/rollback/'+key).update($scope.attendances[key], function (err) {
+        if(!err){
+          delete $scope.attendances[key];
+          rowform.$cancel();
+        }
+      });
+    };
 
     $scope.cancel = function(rowform){
       rowform.$cancel();
