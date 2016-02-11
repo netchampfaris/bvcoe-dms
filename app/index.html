@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="bower_components/angular-busy/dist/angular-busy.css" />
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css" />
+    <link rel="stylesheet" href="bower_components/pikaday/css/pikaday.css" />
+    <link rel="stylesheet" href="bower_components/handsontable/dist/handsontable.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -67,6 +69,7 @@
                                     Welcome {{$storage.userData.name}} <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                   <li><a ng-href="#/dataentry" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Data Entry</a></li>
+                                  <li><a ng-href="#/lazyAttendances" ng-if="$storage.authData.uid == '0e9be62d-34d4-4267-8ba0-8ea2f79a8616'">Lazy Attendances</a></li>
                                   <li><a ng-href="" ng-click="logout()">Logout</a></li>
                                 </ul>
                             </li>
@@ -120,6 +123,11 @@
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-confirm-modal/angular-confirm.min.js"></script>
+    <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
+    <script src="bower_components/pikaday/pikaday.js"></script>
+    <script src="bower_components/handsontable/dist/handsontable.js"></script>
+    <script src="bower_components/ngHandsontable/dist/ngHandsontable.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
@@ -144,6 +152,7 @@
     <script src="scripts/directives/toggle.js"></script>
     <script src="scripts/controllers/modal.js"></script>
     <script src="scripts/filters/objectfilter.js"></script>
+    <script src="scripts/controllers/lazyattendances.js"></script>
     <!-- endbuild -->
 
     <script>

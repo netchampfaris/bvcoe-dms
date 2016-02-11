@@ -251,6 +251,7 @@ angular.module('bvcoeDmsApp')
         if(!err){
           delete $scope.attendances[key];
           rowform.$cancel();
+          $scope.$apply();
         }
       });
     };

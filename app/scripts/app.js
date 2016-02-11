@@ -21,7 +21,8 @@ angular
     'ngStorage',
     'xeditable',
     'ui.bootstrap',
-    'angular-confirm'
+    'angular-confirm',
+    'ngHandsontable'
   ])
   .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions, $route) {
     $rootScope.$storage = $localStorage;
@@ -143,6 +144,20 @@ angular
         templateUrl: 'views/extras.html',
         controller: 'ExtrasCtrl',
         controllerAs: 'extras',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
+      })
+      .when('/lazyAttendances', {
+        templateUrl: 'views/lazyattendances.html',
+        controller: 'LazyattendancesCtrl',
+        controllerAs: 'lazyAttendances',
         resolve: {
           // controller will not be loaded until $requireAuth resolves
           // Auth refers to our $firebaseAuth wrapper in the example above

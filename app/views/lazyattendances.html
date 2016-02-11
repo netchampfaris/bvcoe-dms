@@ -1,0 +1,44 @@
+<div cg-busy="{promise:promise}"></div>
+<form class="form-inline" role="form">
+  <div class="form-group">
+    <label for="dept">Department:</label>
+    <select class="form-control" id="dept" ng-model="selected.dept">
+      <option ng-repeat="dept in depts" value="{{dept.id}}" >{{dept.name}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="year">Year:</label>
+    <select class="form-control" id="year" ng-change="setSem()" ng-model="selected.year">
+      <option ng-repeat="year in years" value="{{year.id}}" >{{year.name}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sem">Semester:</label>
+    <select class="form-control" id="sem" ng-model="selected.sem">
+      <option ng-repeat="sem in sems" value="{{sem.id}}" >{{sem.name}}</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="type">Type:</label>
+    <select class="form-control" id="type" ng-model="selected.type" ng-change="getSubjects()">
+      <option value="th">Theory</option>
+      <option value="pr">Practical</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label for="sub">Subjects:</label>
+    <select class="form-control" id="sub" ng-model="selected.sub" ng-change="getStudents()">
+      <option ng-repeat="(id,sub) in subs" value="{{id}}">{{sub.name}}</option>
+    </select>
+  </div>
+{{selected}}
+</form>
+<hot-table settings="{colHeaders: colHeaders, contextMenu: false, afterChange: afterChange}"
+           datarows="students" allow-insert-column="false" allow-insert-row="false" max-rows="students.length" max-cols="4">
+  <hot-column data="rollno" title="'Rollno'" read-only></hot-column>
+  <hot-column data="name" title="'Name'" type="grayedOut" read-only></hot-column>
+  <hot-column data="att" title="'Attendance'" width="150"></hot-column>
+  <hot-column data="totalAtt" title="'Total Lectures'" width="150"></hot-column>
+</hot-table>
+<button class="btn btn-info" ng-click="submit(students)">Submit</button>
+<button class="btn btn-default" ng-click="reset()">Reset calculatedAttendances</button>
