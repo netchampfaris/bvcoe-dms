@@ -1,5 +1,5 @@
-<h4>Data Entry Form</h4>
-<form name="form" enctype="multipart/form-data" class="col-md-6">
+<h4  class="text-center">Data Entry Form</h4>
+<!--<form name="form" enctype="multipart/form-data" class="col-md-6">
 
   <div class='form-group'>
     <div class="input-group">
@@ -19,4 +19,96 @@
   <div class="alert alert-success" ng-if="success">{{success}}</div>
   <button class="btn btn-info" ng-disabled="isProcessing" ng-click="upload()">Upload to database</button>
   <div cg-busy="{promise:loading, message:'Uploading..', backdrop:true}"></div>
+</form>-->
+<form name="form" class="form-horizontal" role="form">
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="dept">Department Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="dept" ng-model="data.deptname" placeholder="Computer, Instrumentation, Mechanical">
+      <p class="help-block">For e.g <code>Computer</code> for Computer Department, <code>Mechanical Division A</code> for Mechanical Division A Department</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="deptid">Department ID:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="deptid" ng-model="data.deptid" placeholder="cs, is, me-a, me-b">
+      <p class="help-block">For e.g <code>cs</code> for Computer, <code>me-a</code> for Mechanical Division A. Make sure it does not contain spaces. </p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="hod">HOD name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="hod" ng-model="data.hod" placeholder="Fullname of HOD">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="yearid">Year:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="yearid" ng-model="data.yearid" placeholder="fe, se, te, be, me">
+      <p class="help-block">For e.g <code>fe</code> for 1st year, <code>se</code> for 2nd year. Make sure it does not contain spaces.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="semid">Semester:</label>
+    <div class="col-sm-10">
+      <input type="number" maxlength="1" min="1" max="8" class="form-control" ng-model="data.semid" id="semid" placeholder="1, 2, 3, 4, 5, 6, 7, 8">
+      <p class="help-block">For e.g <code>1</code> for Semester 1, <code>2</code> for Semester 2. Make sure it does not contain spaces.</p>
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="advisor">Class Advisor name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="advisor" ng-model="data.advisor" placeholder="Fullname of Class Advisor">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="totalStu">Total Students:</label>
+    <div class="col-sm-10">
+      <input type="number" min="1" maxlength="3" class="form-control" ng-model="data.totalStudents" id="totalStu" placeholder="Total number of students"
+             ng-change="createStudents(data.totalStudents)">
+    </div>
+  </div>
+  <div class="form-group">
+    <label class="control-label col-sm-2" for="totalBatches">No of batches for practicals:</label>
+    <div class="col-sm-10">
+      <input type="number" min="1" maxlength="3" class="form-control" ng-model="data.totalBatches" id="totalBatches" placeholder="Total number of batches"
+             ng-change="createBatches(data.totalBatches)">
+    </div>
+  </div>
+  <div class="form-group" ng-repeat="batch in batchInfo">
+    <label class="control-label col-sm-2" for="">Batch {{batch.id}} starts with rollno:</label>
+    <div class="col-sm-10">
+      <input type="number" min="1" maxlength="3" class="form-control" ng-model="batch.rollno" id="" placeholder="Starting rollno for this batch?">
+    </div>
+  </div>
+  <div class="form-group" ng-if="students.length > 0">
+    <label class="control-label col-sm-2" for="">Students Information:</label>
+    <div class="col-sm-10">
+      <hot-table settings="{colHeaders: colHeaders, contextMenu: false, afterChange: afterChange}"
+                 datarows="students" allow-insert-column="false" allow-insert-row="false" max-rows="students.length" max-cols="6">
+        <hot-column data="uid" title="'Unique ID'" validator="uidValidator"></hot-column>
+        <hot-column data="rollno" title="'Rollno'" read-only></hot-column>
+        <hot-column data="name" title="'Name'" width="150" type="grayedOut"></hot-column>
+        <hot-column data="phone" title="'Phone'" width="150" validator="phoneValidator"></hot-column>
+        <hot-column data="pphone" title="'Parents Phone'" width="150" validator="phoneValidator"></hot-column>
+        <hot-column data="gender" title="'Gender (m/f)'"  width="100" validator="genderValidator"></hot-column>
+      </hot-table>
+    </div>
+  </div>
+  <div class="form-group" ng-if="subjects.length > 0">
+    <label class="control-label col-sm-2" for="">Subjects Information:</label>
+    <div class="col-sm-10">
+      <p class="help-text">To add a new row, right click into a cell and Insert row below</p>
+      <hot-table columns="subjectColumns"
+                 context-menu="true"
+                 allow-insert-row="true"
+                 datarows="subjects">
+      </hot-table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <button class="btn btn-info btn-lg col-sm-4" ng-click="submit(data, batchInfo, students, subjects)">Submit</button>
+  </div>
+  <div cg-busy="{promise:uploaded, message:'Uploading..', backdrop:true}"></div>
 </form>
