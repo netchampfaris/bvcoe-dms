@@ -8,4 +8,4 @@
  * Constant in the bvcoeDmsApp.
  */
 angular.module('bvcoeDmsApp')
-  .constant('restapiurl', 'http://bvcoeportal.orgfree.com');
+  .constant('restapiurl', 'http://hazri.herokuapp.com');

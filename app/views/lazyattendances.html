@@ -25,6 +25,12 @@
       <option value="pr">Practical</option>
     </select>
   </div>
+  <div class="form-group" ng-if="selected.type == 'pr'">
+    <label for="type">Batch:</label>
+    <select class="form-control" id="batch" ng-model="selected.batch" ng-change="selected.sub = null">
+      <option ng-repeat="batch in batches" value="{{batch.id}}">{{batch.name}}</option>
+    </select>
+  </div>
   <div class="form-group">
     <label for="sub">Subjects:</label>
     <select class="form-control" id="sub" ng-model="selected.sub" ng-change="getStudents()">

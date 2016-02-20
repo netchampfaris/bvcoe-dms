@@ -53,11 +53,11 @@
             <th ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Send SMS</th>
           </tr>
           <tr ng-repeat="item in defaulters">
-            <td>{{item.dept}} {{item.year}} Sem {{item.sem}}</td>
+            <td>{{item.dept | uppercase}} {{item.year | uppercase}} Sem {{item.sem}}</td>
             <td>{{item.date | date:'dd MMMM, yyyy'}}</td>
-            <td><a ng-click="download(item.base64)">Download</a></td>
+            <td><a href="" ng-click="download(item)">Download</a></td>
             <td ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">
-              <a href="" ng-click="viewDefaulters(item.percentData)">Defaulter students</a>
+              <a href="" ng-click="viewDefaulters(item)">Defaulter students</a>
             </td>
           </tr>
         </table>

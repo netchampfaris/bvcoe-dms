@@ -18,10 +18,10 @@ angular.module('bvcoeDmsApp')
       var defer = $q.defer();
       $http({
         method: 'GET',
-        url: restapiurl+'/defaulters/generate_defaulter_api.php/'+dept+'/'+year+'/'+sem
+        url: restapiurl+'/generateDefaulter/'+dept+'/'+year+'/'+sem
       }).then(function successCallback(response) {
         console.log(response);
-        $scope.defaulters = response.data.data;
+        //$scope.defaulters = response.data.data;
         defer.resolve();
         $scope.message.success = true;
         //alert('Defaulter generated successfully');

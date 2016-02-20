@@ -8,7 +8,7 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q, $uibModal) {
+  .controller('DefaultersCtrl', function ($scope, FirebaseRef, $q, $uibModal, firebaseurl, $http) {
 
     $scope.sms = {
       success: false
@@ -62,57 +62,66 @@ angular.module('bvcoeDmsApp')
         case "4": year = "be"; break;
       }
       var deferred = $q.defer();
-      FirebaseRef.child('defaulters/'+dept).once('value',function (snapshot) {
-        var defaulters = [];
 
-        for(var key in snapshot.val())
+      $http({
+        method: 'GET',
+        url: firebaseurl+'/defaulters/'+dept+'/.json?shallow=true'
+      }).then(function successCallback(response) {
+
+        //console.log(response);
+        var defaulters = [];
+        for(var key in response.data)
         {
           var res = key.split("-");
           //console.log(res);
           if(dept == res[1] && year == res[2] && sem == res[3].substr(3))
             defaulters.push({
-              dept: res[1].toUpperCase(),
-              year: res[2].toUpperCase(),
+              key: key,
+              dept: res[1],
+              year: res[2],
               sem: res[3].substr(3),
-              date: res[4]+'-'+res[5]+'-'+res[6],
-              base64: snapshot.val()[key].excel,
-              percentData: snapshot.val()[key].percentData
+              date: res[4]+'-'+res[5]+'-'+res[6]
             });
         }
         $scope.defaulters = defaulters;
         deferred.resolve();
         console.log($scope.defaulters);
-        $scope.$apply();
-      }, function (err) {
-        console.log(err);
+      }, function errorCallback(response) {
+        console.log(response);
         deferred.reject();
       });
       $scope.promise = deferred.promise;
     };
 
-    $scope.download = function(base64) {
-      window.open (base64, '_blank');
-    }
-
-    $scope.viewDefaulters = function (percentData) {
-
-      var modalInstance = $uibModal.open({
-        animation: true,
-        templateUrl: 'views/modals/mymodal.html',
-        controller: 'ModalCtrl',
-        size: 'lg',
-        resolve: {
-          defaulters: function () {
-            return percentData;
-          }
-        }
+    $scope.download = function(item) {
+      FirebaseRef.child('defaulters/'+item.dept+'/'+item.key+'/excel').once('value', function (data) {
+        window.open (data.val(), '_blank');
       });
+    };
 
-      modalInstance.result.then(function (smssent) {
-        $scope.sms.success = smssent;
-        console.log(smssent);
-      }, function () {
-        console.log('Modal dismissed at: ' + new Date());
+    $scope.viewDefaulters = function (item) {
+
+      FirebaseRef.child('defaulters/'+item.dept+'/'+item.key+'/percentData').once('value', function (data) {
+        var percentData = data.val();
+
+        var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'views/modals/mymodal.html',
+          controller: 'ModalCtrl',
+          size: 'lg',
+          resolve: {
+            defaulters: function () {
+              return percentData;
+            }
+          }
+        });
+
+        modalInstance.result.then(function (smssent) {
+          $scope.sms.success = smssent;
+          console.log(smssent);
+        }, function () {
+          console.log('Modal dismissed at: ' + new Date());
+        });
       });
 
     };
