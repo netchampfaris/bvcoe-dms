@@ -10,6 +10,13 @@
 angular.module('bvcoeDmsApp')
   .controller('AttendancesCtrl', function ($rootScope, $scope, FirebaseRef, $q, $filter, $localStorage) {
 
+    $rootScope.$storage = $localStorage;
+    FirebaseRef.child('teachers/'+$localStorage.authData.uid).once('value')
+      .then(function (snap) {
+        $localStorage.userData = snap.val();
+        $scope.$apply();
+      });
+
     var students = {};
 
     var getAttendances = function () {

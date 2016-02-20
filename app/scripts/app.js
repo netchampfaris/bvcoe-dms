@@ -28,21 +28,12 @@ angular
     $rootScope.$storage = $localStorage;
     $rootScope.$storage.authData = FirebaseRef.getAuth();
 
-    FirebaseRef.onAuth(function(authData) {
-      if (authData) {
-        console.log("Logged in as:", authData.uid);
-        $location.path('/attendances');
-      } else {
-        console.log("Logged out");
-      }
-      $rootScope.$storage.authData = FirebaseRef.getAuth();
-    });
-
     $rootScope.logout = function () {
       FirebaseRef.unauth();
-      delete $rootScope.$storage.authData;
-      delete $rootScope.$storage.userData;
-      $location.path('/')
+      console.log("Logged out");
+      delete $localStorage.authData;
+      delete $localStorage.userData;
+      $location.path('/');
     };
 
     editableOptions.theme = 'bs3';
@@ -185,7 +176,7 @@ angular
       .otherwise({
         redirectTo: '/attendances'
       });
-
+/*    $locationProvider.html5Mode(true);*/
     //Enable cross domain calls
     $httpProvider.defaults.useXDomain = true;
 

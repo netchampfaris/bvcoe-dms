@@ -11,7 +11,7 @@
 angular.module('bvcoeDmsApp')
   .filter('objectFilter', function () {
     return function (items, search) {
-      console.log('search:', search);
+      //console.log('search:', search);
       if(search == null || typeof search == 'undefined')
         return items;
       var result = {};

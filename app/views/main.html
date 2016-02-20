@@ -18,8 +18,8 @@
                     </div>
                     <button class="btn btn-primary btn-block" ng-click="login(user)">Sign in</button>
                     <div cg-busy="{promise:promise, message:'Signing in..', backdrop:true}"></div>
-                    <div class="alert" ng-class="{'alert-success':login.success, 'alert-danger':!login.success}" ng-show="login.message.length"
-                    style="margin-top: 1em" role="alert">{{login.message}}</div>
+                    <div class="alert" ng-class="{'alert-success':loginResult.success, 'alert-danger':!loginResult.success}" ng-show="!loginResult.success"
+                    style="margin-top: 1em" role="alert">{{loginResult.message}}</div>
                 </form>
             </div>
         </div>
@@ -30,7 +30,7 @@
                 <h3 class="panel-title">Teacher's Registration</h3>
             </div>
             <div class="panel-body">
-                <form class="form-signin" name="regform" ng-submit="register(reg)">
+                <form class="form-signin" name="regform" ng-submit="register(reg)" ng-init="reg = {}">
                     <div class="input-group" ng-class="{ 'has-error' : regform.name.$invalid && !regform.name.$pristine }">
                         <label for="inputName" class="sr-only">Full Name</label>
                         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>

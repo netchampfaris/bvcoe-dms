@@ -8,86 +8,99 @@
  * Controller of the bvcoeDmsApp
  */
 angular.module('bvcoeDmsApp')
-    .controller('MainCtrl', function (FirebaseRef, $scope, $location, $rootScope, $q, isNewUser) {
+    .controller('MainCtrl', function (FirebaseRef, $scope, $location, $rootScope, $q, $localStorage) {
 
-        //$rootScope.authData = FirebaseRef.getAuth();
-
-        $rootScope.$storage.authData = FirebaseRef.getAuth();
+        $scope.$storage = $localStorage;
 
         $scope.depts = [];
         $scope.years = [];
         $scope.sems = [];
 
-        FirebaseRef.onAuth(function (authData) {
-            if (authData) {
-                isNewUser(authData).then(function (isNew) {
-                    console.log('new user: ' + isNew);
-                    if (isNew) {
-                        FirebaseRef.child('teachers/' + authData.uid).set({
-                            name: $scope.reg.name,
-                            role:$scope.reg.teacherrole,
-                            dept: $scope.reg.dept,
-                            year: $scope.reg.year
-
-                            //add other details if you want
-                        }, function () {
-                            if (tokenkey) {
-                                FirebaseRef.child("tokens/" + tokenkey).remove(function () {
-                                    console.log('token removed ' + tokenkey);
-                                });
-                            }
-                        });
-                    }
-                    else //get the role of user
-                    {
-                        FirebaseRef.child('teachers/' + authData.uid).once('value', function (data) {
-                            $rootScope.$storage.userData = data.val();
-                            $rootScope.$apply();
-                        });
-                    }
-                    console.log("Logged in as:", authData.uid);
-                    $location.path('/attendances');
-
-                }, function () { });
+      var teacherData = {};
 
 
-            } else {
-                console.log("Logged out");
-            }
-        });
+      function newUser() {
+        console.log('newUser');
+        function updateTeacherData() {
+          //console.log(teacherData);
+          return FirebaseRef.child('teachers/'+$localStorage.authData.uid).update({
+            name: teacherData.name,
+            role: teacherData.teacherrole || null,
+            dept: teacherData.dept,
+            year: teacherData.year || null
+          });
+        }
+        updateTeacherData()
+          .then(function () {
+            console.log('destroy token');
+            return FirebaseRef.child('tokens/' + tokenkey).remove();  //remove token
+          })/*
+          .then(function () {
+            return existingUser();
+          })*/;
+      }
 
-        $scope.login = {};
-        $scope.login.message = '';
-        $scope.login.success = true;
+      function existingUser() {
+        console.log('existingUser');
+        return FirebaseRef.child('teachers/' + $localStorage.authData.uid).once('value');
+      }
+
+      FirebaseRef.onAuth(function (authData) {
+        $localStorage.authData = authData;
+        if(authData){
+          FirebaseRef.child('teachers/'+authData.uid).once('value')
+            .then(function (snap) {
+              return (snap.val()) ? false : true;  //check if newUser
+            })
+            .then(function(isNewUser) {
+              console.log('isNewUser');
+              if(isNewUser)
+                return newUser();/*
+              else
+                return existingUser();*/
+            })
+            .then(function () {
+              console.log('userData');
+              $location.path('/attendances');
+              $scope.$apply();
+            });
+        }
+      });
+
+        $scope.loginResult = {
+          message: '',
+          success: true
+        };
+
         $scope.login = function (user) {
-            var defer = $q.defer();
-            FirebaseRef.authWithPassword({
-                "email": user.email,
-                "password": user.pass
-            }, function (error, authData) {
-                if (error) {
-                    switch (error.code) {
-                        case "INVALID_PASSWORD":
-                            $scope.login.message = "The password is incorrect.";
-                            break;
-                        case "INVALID_EMAIL":
-                            $scope.login.message = "The specified email is not a valid email.";
-                            break;
-                        default:
-                            $scope.login.message = error;
-                    }
-                    $scope.login.success = false;
-                    defer.reject();
-                } else {
-                    //console.log("Authenticated successfully with payload:", authData);
-                    $scope.login.success = true;
-                    $scope.login.message = '';
-                    defer.resolve();
-                }
-            }, {
-                    remember: 'sessionOnly' /*later change it to sessionOnly*/
-                });
-            $scope.promise = defer.promise;
+          var defer = $q.defer();
+
+          function login() {
+            return FirebaseRef.authWithPassword({
+              "email": user.email,
+              "password": user.pass
+            },{
+              remember: 'sessionOnly'
+            })
+          }
+
+          login()
+            .then(function (authData) {
+              //console.log(authData);
+              $scope.loginResult = {
+                success: true,
+                message: ''
+              };
+              defer.resolve();
+            }, function (err) {
+              console.log(err);
+              $scope.loginResult = {
+                success: false,
+                message: err.message
+              };
+              defer.reject();
+            });
+          $scope.promise = defer.promise;
         };
 
         /*Register form*/
@@ -121,6 +134,8 @@ angular.module('bvcoeDmsApp')
         var tokenkey;
 
         $scope.register = function (reg) {
+          teacherData = _.cloneDeep(reg);
+
             var defer = $q.defer();
             list = FirebaseRef.child('tokens');
             list.once('value', function (tokens) {
@@ -180,10 +195,5 @@ angular.module('bvcoeDmsApp')
 
             $scope.regpromise = defer.promise;
         };
-
-
-
-
-
 
     });
