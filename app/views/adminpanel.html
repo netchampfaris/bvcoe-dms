@@ -1,0 +1,30 @@
+<p>This is the adminPanel view.</p>
+<h3>Reset calculatedAttendances</h3>
+<form role="form">
+  <div class="form-group">
+    <label for="dept">Dept id:</label>
+    <input type="text" class="form-control" id="dept" ng-model="dept">
+  </div>
+  <button class="btn btn-default" ng-click="reset(dept)">Reset calculatedAttendances</button>
+</form>
+
+<h3>Change UID</h3>
+<form role="form" class="form-inline">
+  <div class="form-group">
+    <label for="deptuid">Dept id:</label>
+    <input type="text" class="form-control" id="deptuid" ng-model="dept">
+  </div>
+  <div class="form-group">
+    <label for="uid1">Original UID:</label>
+    <input type="text" class="form-control" id="uid1" ng-model="uid1">
+  </div>
+  <div class="form-group">
+    <label for="uid2">New UID:</label>
+    <input type="text" class="form-control" id="uid2" ng-model="uid2">
+  </div>
+  <div class="form-group">
+    <button class="btn btn-default" ng-click="changeUID(uid1, uid2, dept)">Change {{uid1}} to {{uid2}}</button>
+  </div>
+</form>
+<div cg-busy="{promise: finished}"></div>
+

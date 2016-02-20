@@ -142,12 +142,6 @@ angular.module('bvcoeDmsApp')
       //console.log(lazyAtt);
     };
 
-    $scope.reset = function () {
-      var ref = new Firebase('https://hazrisv.firebaseio.com/commands');
-      ref.push({
-        command: 'reset',
-        dept: $scope.selected.dept
-      });
-    }
+
 
   });
