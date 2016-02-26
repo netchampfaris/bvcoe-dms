@@ -1,3 +1,4 @@
+<div class="container">
 <h3>{{$storage.userData.dept}} {{$storage.userData.year}} sem{{$storage.userData.sem}}</h3>
 <div cg-busy="{promise:stuPromise}"></div>
 <table class="table table-striped">
@@ -12,3 +13,4 @@
     <td><a href="#" editable-text="student.extra" onbeforesave="updateExtra(student, $data)">{{ student.extra || "0" }}</a></td>
   </tr>
 </table>
+</div>
