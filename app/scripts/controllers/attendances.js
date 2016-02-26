@@ -22,7 +22,14 @@ angular.module('bvcoeDmsApp')
     var getAttendances = function () {
       $scope.attendances = [];
       var defer = $q.defer();
-      FirebaseRef.child('attendances/'+$rootScope.$storage.userData.dept).orderByChild('teacher').equalTo($rootScope.$storage.authData.uid).once('value', function (snapshot) {
+      var teachersAtt = FirebaseRef.child('attendances/'+$rootScope.$storage.userData.dept).orderByChild('teacher').equalTo($rootScope.$storage.authData.uid);
+      var adminAtt = FirebaseRef.child('attendances/'+$rootScope.$storage.userData.dept);
+      var attRef;
+      if($localStorage.userData.admin)
+        attRef = adminAtt;
+      else
+        attRef = teachersAtt;
+      attRef.once('value', function (snapshot) {
         $scope.attendances = snapshot.val();
         $scope.$apply();
         defer.resolve();
@@ -107,13 +114,14 @@ angular.module('bvcoeDmsApp')
 
 
 
-    $scope.showDept = function(dept) {
-      for(var deptid in $scope.depts)
+    /*$scope.showDept = function(dept) {
+      /!*for(var deptid in $scope.depts)
       {
         if(dept == deptid)
           return $scope.depts[deptid]['name'];
-      }
-    }
+      }*!/
+      return $scope.depts[dept]['name'];
+    }*/
 
     $scope.showYear = function(year) {
       var selected = [];

@@ -45,7 +45,7 @@
   <tr ng-repeat="(key, item) in attendances | objectFilter:search track by $index">
     <td>{{$index + 1}}</td>
     <td>
-      <span>{{showDept(item.dept)}}</span>
+      <span>{{depts[item.dept].name}}</span>
 
       <span>{{(item.year).toUpperCase()}}</span>
 

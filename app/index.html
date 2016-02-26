@@ -60,7 +60,7 @@
                               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Defaulters <span class="caret"></span></a>
                               <ul class="dropdown-menu">
                                 <li><a ng-href="#/defaulters">View Defaulters</a></li>
-                                <li><a ng-href="#/genDefaulter" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Generate Defaulter</a></li>
+                                <li><a ng-href="#/genDefaulter" ng-if="$storage.userData.role">Generate Defaulter</a></li>
                               </ul>
                             </li>
                         </ul>
@@ -69,9 +69,9 @@
                                 <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                                     Welcome {{$storage.userData.name}} <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                  <li><a ng-href="#/adminPanel" ng-if="$storage.authData.uid == '0e9be62d-34d4-4267-8ba0-8ea2f79a8616'">Admin Panel</a></li>
-                                  <li><a ng-href="#/dataentry" ng-if="$storage.userData.role == 'advisor' || $storage.userData.role == 'hod'">Data Entry</a></li>
-                                  <li><a ng-href="#/lazyAttendances" ng-if="$storage.authData.uid == '0e9be62d-34d4-4267-8ba0-8ea2f79a8616'">Lazy Attendances</a></li>
+                                  <li><a ng-href="#/adminPanel" ng-if="$storage.userData.admin">Admin Panel</a></li>
+                                  <li><a ng-href="#/dataentry" ng-if="$storage.userData.role">Data Entry</a></li>
+                                  <li><a ng-href="#/lazyAttendances" ng-if="$storage.userData.admin">Lazy Attendances</a></li>
                                   <li><a ng-href="" ng-click="logout()">Logout</a></li>
                                 </ul>
                             </li>
