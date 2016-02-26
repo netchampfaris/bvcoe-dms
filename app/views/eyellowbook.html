@@ -1,0 +1,69 @@
+<div>
+    <ul class="nav nav-pills center">
+        <toast></toast>
+        <li><a ng-click="deleteAuthData()">Delete</a></li>
+        <li ng-repeat="val in sublists"><a ng-click="showEyellowBook(val)">{{val}}</a></li>
+        <li ng-hide="checkEmptyObject(edited)">
+         <button type="button" ng-click="upload()" class="center btn btn-primary">
+                Upload
+          </button>
+            <button type="button" ng-click="clearEdit()" class=" center btn btn-success">
+                Clear Edits
+         </button>
+            
+        </li>
+    </ul>
+    <div cg-busy="{promise:promise, message:'Loading..', backdrop:true}"></div>
+</div>
+<div cg-busy="{promise:promise1, message:'Loading..', backdrop:true}"></div>
+<div class="tableContainer " ng-show="selection">
+    <div class="fixed"><em>Editable Sheet</em></div>
+    <div class="scrollable">
+        <table class="table table-bordered ">
+            <thead>
+                <tr>
+                    <th rowspan="3">Roll No</th>
+                    <th ng-repeat="data in selection | orderObjectBy: 'date'"><span class=" glyphicon glyphicon-calendar"></span> {{data.date| date: 'dd/MM'}}</th>
+                    <th rowspan="3">Lazy Att.</th>
+                    <th rowspan="3">Cumm Att.</th>
+                </tr>
+                <tr>
+                    <th ng-repeat="data in selection | orderObjectBy: 'date'"><span class=" glyphicon glyphicon-hourglass"></span> {{data.noofhours}}</th>
+                </tr>
+                <tr>
+                    <td ng-repeat="data in selection | orderObjectBy: 'date'">
+                        <span editable-text="data.topic" e-name="name" e-form="data.$index" onbeforesave="checkName($data)">
+                    <span class=" glyphicon glyphicon-pencil" data-toggle="tooltip" data-original-title="{{data.topic}}"></span>
+                        </span>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="student in students | orderObjectBy :'rollno'">
+                    <th>{{student.rollno}}</th>
+                    <td ng-repeat="(key,data) in selection">
+                        <div data-toggle="tooltip" ng-click="!edit[key]||click(key,student.uid)" data-original-title="{{student.name}}" class="center"
+                        ng-class="{absent: data.absentno.indexOf(student.uid) > -1,present:data.presentno.indexOf(student.uid) > -1,editMode:edit[key]==true}"></div>
+                    </td>
+                    <td>{{LA[student.uid].att}}</td>
+                    <td>{{cumatt[student.uid].att}}</td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td ng-repeat="(key,data) in selection">
+                        <button type="button" ng-click="enableEditing(key)" ng-show="!edit[key]" class="btn btn-primary">
+                            Edit
+                        </button>
+                        <button type="button" ng-click="doneEditing(key)" ng-show="edit[key]" class="btn btn-success">
+                            Done
+                        </button>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+               

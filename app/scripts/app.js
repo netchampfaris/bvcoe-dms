@@ -22,7 +22,8 @@ angular
     'xeditable',
     'ui.bootstrap',
     'angular-confirm',
-    'ngHandsontable'
+    'ngHandsontable',
+    'ngToast'
   ])
   .run(function($rootScope, FirebaseRef, FirebaseAuth, $location, $localStorage, editableOptions, $route) {
     $rootScope.$storage = $localStorage;
@@ -163,6 +164,20 @@ angular
         templateUrl: 'views/adminpanel.html',
         controller: 'AdminpanelCtrl',
         controllerAs: 'adminPanel',
+        resolve: {
+          // controller will not be loaded until $requireAuth resolves
+          // Auth refers to our $firebaseAuth wrapper in the example above
+          "currentAuth": ["FirebaseAuth", function(FirebaseAuth) {
+            // $requireAuth returns a promise so the resolve waits for it to complete
+            // If the promise is rejected, it will throw a $stateChangeError (see above)
+            return FirebaseAuth.$requireAuth();
+          }]
+        }
+      })
+      .when('/eYellowBook', {
+        templateUrl: 'views/eyellowbook.html',
+        controller: 'EyellowbookCtrl',
+        controllerAs:'eyellowbook',
         resolve: {
           // controller will not be loaded until $requireAuth resolves
           // Auth refers to our $firebaseAuth wrapper in the example above
