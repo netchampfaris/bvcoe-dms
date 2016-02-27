@@ -75,10 +75,20 @@ angular.module('bvcoeDmsApp')
 
         $timeout(function () {
           $scope.$apply('data');
-        }, 2000);
-
+        }, 3000);
+        
         $scope.promise = defer.promise;
-
+        $scope.reCalculateCumAtt =function(rollno,noofhours,status){
+            console.log(status,rollno,noofhours);
+            if(status=='pr')
+            {
+                $scope.cumAtt[rollno].att+=+noofhours;
+            }
+            if(status=='ab')
+            {
+                $scope.cumAtt[rollno].att-=+noofhours;
+            }
+        }
         $scope.showEyellowBook = function (selection) {
             $scope.cumAtt = {};
             var defer = $q.defer();
