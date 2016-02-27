@@ -31,7 +31,5 @@ angular.module('bvcoeDmsApp')
         defer.reject();
       });
       $scope.promise = defer.promise;
-
     };
-
   });

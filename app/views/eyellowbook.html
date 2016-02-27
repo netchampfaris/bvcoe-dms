@@ -3,19 +3,19 @@
         <toast></toast>
         <li ng-repeat="val in sublists"><a ng-click="showEyellowBook(val)">{{val}}</a></li>
         <li ng-hide="checkEmptyObject(edited)">
-         <button type="button" ng-click="upload()" class="center btn btn-primary">
+            <button type="button" ng-click="upload()" class="center btn btn-primary">
                 Upload
-          </button>
+            </button>
             <button type="button" ng-click="clearEdit()" class=" center btn btn-success">
                 Clear Edits
-         </button>
+            </button>
 
         </li>
     </ul>
     <div cg-busy="{promise:promise, message:'Loading..', backdrop:true}"></div>
 </div>
 <div cg-busy="{promise:promise1, message:'Loading..', backdrop:true}"></div>
-<div class="tableContainer " ng-show="selection">
+<div class="tableContainer" ng-if="selection">
     <div class="fixed"><em>Editable Sheet</em></div>
     <div class="scrollable">
         <table class="table table-bordered">
@@ -23,8 +23,8 @@
                 <tr>
                     <th rowspan="3">Roll No</th>
                     <th ng-repeat="data in selection | orderObjectBy: 'date'"><span class=" glyphicon glyphicon-calendar"></span> {{data.date| date: 'dd/MM'}}</th>
-                    <th rowspan="3">Lazy Att.</th>
-                    <th rowspan="3">Cumm Att.</th>
+                    <th rowspan="3" width="15px">Lazy Att.</th>
+                    <th rowspan="3">Total </th>
                 </tr>
                 <tr>
                     <th ng-repeat="data in selection | orderObjectBy: 'date'"><span class=" glyphicon glyphicon-hourglass"></span> {{data.noofhours}}</th>
@@ -40,12 +40,12 @@
             <tbody>
                 <tr ng-repeat="student in students | orderObjectBy :'rollno'">
                     <th>{{student.rollno}}</th>
-                    <td ng-repeat="(key,data) in selection">
+                    <td ng-repeat="(key,data) in selection" ng-init="calculateCumAtt(student.rollno,data.presentno.indexOf(student.uid) > -1?data.noofhours:0,data.noofhours)">
                         <div data-toggle="tooltip" ng-click="!edit[key]||click(key,student.uid)" data-original-title="{{student.name}}" class="center"
                         ng-class="{absent: data.absentno.indexOf(student.uid) > -1,present:data.presentno.indexOf(student.uid) > -1,editMode:edit[key]==true}"></div>
                     </td>
-                    <td>{{LA[student.uid].att}}</td>
-                    <td>{{cumatt[student.uid].att}}</td>
+                    <td ng-init="calculateCumAtt(student.rollno,LA[student.uid].att,LA[student.uid].totalAtt)" >{{LA[student.uid].att}}</td>
+                    <th data-toggle="tooltip" data-original-title="{{student.rollno}} {{student.name}}">{{cumAtt[student.rollno].att}}/<small>{{cumAtt[student.rollno].totalAtt}}<small></th>
                 </tr>
                 <tr>
                     <td>&nbsp;</td>

@@ -15,8 +15,15 @@ angular.module('bvcoeDmsApp')
         $scope.students;
         $scope.LA = {};
         $scope.edited = {};
-        $scope.edit = {}
-
+        $scope.edit = {};
+        $scope.cumAtt={};
+        $scope.calculateCumAtt = function(rollno, att, totalAtt){
+            //console.log(rollno);
+            if(!$scope.cumAtt[rollno])
+            $scope.cumAtt[rollno] = {'att':0,'totalAtt':0};
+            $scope.cumAtt[rollno].att += +att;
+            $scope.cumAtt[rollno].totalAtt += +totalAtt;
+        };
         $scope.enableEditing = function (key) {
             $scope.edit[key] = true;
         };
@@ -68,11 +75,12 @@ angular.module('bvcoeDmsApp')
 
         $timeout(function () {
           $scope.$apply('data');
-        }, 3000);
+        }, 2000);
 
         $scope.promise = defer.promise;
 
         $scope.showEyellowBook = function (selection) {
+            $scope.cumAtt = {};
             var defer = $q.defer();
             var year = $scope.data[selection].year;
             var dept = $scope.data[selection].dept;
